@@ -1,0 +1,26 @@
+{
+  "name": "airdropredux",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rexfordkelly-on-makersquare/AirDrop.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rexfordkelly-on-makersquare/AirDrop/issues"
+  },
+  "homepage": "https://github.com/rexfordkelly-on-makersquare/AirDrop#readme",
+  "dependencies": {
+    "angular-ui-router": "^0.3.0",
+    "express": "^4.13.4",
+    "n": "^2.1.0",
+    "socket.io": "^1.4.6",
+    "sqlite3": "^3.1.4"
+  }
+}
