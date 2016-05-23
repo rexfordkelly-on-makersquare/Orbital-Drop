@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" ng-csp="" ng-app="AirDrop">
+
+	<head>
+
+		<base href="/">
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>AirDrop</title>
+
+		<!-- mobile meta -->
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="shortcut icon" type="image/x-icon" href="/resources/images/favicon.ico">
+
+		<!--[if IE]>
+			<link rel="shortcut icon" href="/resources/images/favicon.ico">
+		<![endif]-->
+		<!-- or, set /favicon.ico for IE10 win -->
+		<meta name="msapplication-TileColor" content="#f01d4f">
+
+		<!-- CSS -->
+		<!-- build:css css/style.min.css -->
+		<link rel="stylesheet" type="text/css" href="/resources/styles/style.css" />
+		<!-- endbuild -->
+
+	</head>
+
+	<body class="main-wrapper">
+	
+		<!--[if lt IE 8]>
+		    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+		<![endif]-->
+
+		<!-- Main view for templates -->
+		<div data-ng-view="" class="container"> Loading ...</div>
+
+	</body>
+
+	<!-- Vendors -->
+	<!-- build:nonangularlibs js/nonangularlibs.js -->
+	<script type="text/javascript" src="/resoureces/js/nonangular/jquery-1.11.2.min.js"></script>
+	<!-- endbuild -->
+
+	<!-- Non-angular libraries -->
+	<!-- build:libs js/libs.js -->
+	<script type="text/javascript" src="/resoureces/js/nonangular/lodash.min.js"></script>
+	<script type="text/javascript" src="/resoureces/js/scripts.js"></script>
+	<!-- endbuild -->
+
+	<!-- Angular external libraries for application -->
+	<script type="text/javascript" src="/app/resources/vendor/angular/angular.js"></script>
+	<script type="text/javascript" src="/app/resources/vendor/angular-route/angular-route.js"></script>
+	<script type="text/javascript" src="/app/resources/vendor/angular-sanitize/angular-sanitize.js"></script>
+
+	<!-- Angular components -->
+	<script type="text/javascript" src="/app/app.js"></script>
+	<script type="text/javascript" src="/app/config.js"></script>
+
+	<!-- Application sections -->
+	<script type="text/javascript" src="app/factory.js"></script>
+	<script type="text/javascript" src="app/controller.js"></script>
+
+</html>
