@@ -26,7 +26,7 @@ const Express = require("express");
 
 		// Register Application Routes
 		require( App.paths.APP_ROOT + '/routes.js')(App, x, Express );
-
+		
 		// Start Server
 		x.listen(3000, function(){
 			console.log("All modules loaded, server listening on 3000")
