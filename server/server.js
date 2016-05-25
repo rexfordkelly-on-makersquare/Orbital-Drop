@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/node_modules', express.static(__dirname + '/../node_modules'));
 
-require('./routes/router.js')(app, express, passport, sRouter, busboy, uuid, path, fs);
+require('./routes/router.js')(app, express, passport, sRouter, busboy, uuid, path, fs, io);
 io.use(sRouter)
 
 console.log("server listening on 3000")

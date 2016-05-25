@@ -1,6 +1,6 @@
 
 
-module.exports = function(busboy, uuid, path, fs) {
+module.exports = function(busboy, uuid, path, fs, io) {
 
 	return({
 		upload : function(request, response, error){
