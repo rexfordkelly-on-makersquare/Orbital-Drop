@@ -4,18 +4,22 @@
   "description": "AirDrop for everyone",
   "main": "server.js",
   "dependencies": {
+    "body-parser": "^1.15.1",
+    "busboy": "^0.2.13",
     "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.4.2",
     "cors": "^2.7.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "mongoose": "^4.4.19",
+    "morgan": "^1.7.0",
     "passport": "^0.3.2",
     "passport-github": "^1.1.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "socket.io": "^1.4.6",
-    "socket.io-events": "^0.4.6"
+    "socket.io-events": "^0.4.6",
+    "uuid": "^2.0.2"
   },
   "devDependencies": {},
   "scripts": {
