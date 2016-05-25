@@ -1,33 +1,36 @@
-const 	fs = require('fs');
-const path = require('path');
+var        express = require("express");
+var           cors = require('cors')
+var           http = require('http');
+var            app = express();
+var         morgan = require('morgan');
+var   cookieParser = require('cookie-parser');
+var     bodyParser = require('body-parser');
+var           path = require('path');
+var            app = express();
+var         server = http.createServer(app).listen(process.env.PORT || 3000)
+var       mongoose = require('mongoose');
+var expressSession = require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true });
+var             io = require('socket.io')(server)
+var   SocketRouter = require('socket.io-events');
+var        sRouter = SocketRouter();  
+var       passport = require('passport');
 
-const Express = require("express");
+require('./config/passport.js')(passport);
 
-	/**
-		Our AirDrop Server Application
-	*/
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(cors());
+app.use(morgan('dev'));
+app.use(express.static(__dirname + '/../client/'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use('/node_modules', express.static(__dirname + '/../node_modules'));
 
-	// Our Airdrop Application
-	var App = { paths: { 
-						APP_ROOT: path.join( __dirname, '/app'), // Public Files
-						DOC_ROOT: path.join( __dirname, '../http_public') // Server side Application Files
-					   }
-			  };
+require('./routes/router.js')(app, express, passport, sRouter);
+io.use(sRouter)
 
-	// Express Server Application
-	var x = Express();
-
-
-		// Apply Common Middleware
-		x.use(require('cookie-parser')());
-		x.use(require('body-parser').urlencoded({ extended: true }));
-		x.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+console.log("server listening on 3000")
 
 
-		// Register Application Routes
-		require( App.paths.APP_ROOT + '/routes.js')(App, x, Express );
-		
-		// Start Server
-		x.listen(3000, function(){
-			console.log("All modules loaded, server listening on 3000")
-		});
+
+
