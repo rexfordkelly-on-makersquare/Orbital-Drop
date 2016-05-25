@@ -7,7 +7,7 @@ module.exports = function(app, express, passport, sRouter, busboy, uuid, path, f
     //
     app.use('/api/login', authenticationRouter)
     app.use('/api/profile', clientRouter)
-    app.use('/api/file', fileServiceRouter)
+    app.use('/api/files', fileServiceRouter)
     // Passing registers down into child routes
     require('./authentication.routes.js')(app, passport)
     require('./client.routes.js')(app, sRouter)
