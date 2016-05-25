@@ -2,13 +2,13 @@
 var fileServiceController = require('../controllers/fileServiceController.js')
 module.exports = function(app, express, io){
 	
-	var helpers = fileServiceController(io);
+	var helpers = fileServiceController();
 	app.get('/files/download', helpers.download);
 	app.post('/files/upload', helpers.upload);
 	app.delete('/files/', helpers.delete);
 
 	// testing route remove after client session is completed
-	app.get('/files/', helpers.test);
+	//app.get('/files/', helpers.test);
 
 	// need to refactor sockets
 	// sockets.on('connection',function(socket){

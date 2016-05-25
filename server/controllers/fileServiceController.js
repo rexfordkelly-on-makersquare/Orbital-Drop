@@ -34,7 +34,6 @@ module.exports = function() {
 		    request.pipe(busboy);
 		},
 		download : function(request, response, error) {
-			console.log('download firing')
 			// currently relies on front end to send uniqueId + filename
 			// Refactor: 
 			//	to use global user object
