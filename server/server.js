@@ -14,6 +14,9 @@ var             io = require('socket.io')(server)
 var   SocketRouter = require('socket.io-events');
 var        sRouter = SocketRouter();  
 var       passport = require('passport');
+var				fs = require('fs');
+var 		busboy = require('busboy');
+var			  uuid = require('uuid');
 
 require('./config/passport.js')(passport);
 
@@ -26,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/node_modules', express.static(__dirname + '/../node_modules'));
 
-require('./routes/router.js')(app, express, passport, sRouter);
+require('./routes/router.js')(app, express, passport, sRouter, busboy, uuid, path, fs);
 io.use(sRouter)
 
 console.log("server listening on 3000")
