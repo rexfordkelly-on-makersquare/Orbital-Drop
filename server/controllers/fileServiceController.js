@@ -1,6 +1,9 @@
+const fs = require('fs');
+const busboy = require('busboy');
+const uuid = require('uuid');
+const path = require('path');
 
-
-module.exports = function(busboy, uuid, path, fs, io) {
+module.exports = function() {
 
 	return({
 		upload : function(request, response, error){
@@ -31,6 +34,7 @@ module.exports = function(busboy, uuid, path, fs, io) {
 		    request.pipe(busboy);
 		},
 		download : function(request, response, error) {
+			console.log('download firing')
 			// currently relies on front end to send uniqueId + filename
 			// Refactor: 
 			//	to use global user object
@@ -71,7 +75,8 @@ module.exports = function(busboy, uuid, path, fs, io) {
 			        }
 			  });   
 			});
-		}
+		},
+
 	})
 	
 }

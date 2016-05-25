@@ -1,8 +1,8 @@
 
+const passport = require('passport');
 
 
-
-module.exports = function(passport) {
+module.exports = function() {
 
 	return({
 	serveLoginPage : function(request, response) {
