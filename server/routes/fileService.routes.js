@@ -4,12 +4,12 @@ module.exports = function(app, sRouter, busboy, uuid, path, io){
 	app.get('/download', helpers.download);
 	app.post('/upload', helpers.upload);
 	//listening for approval requests from sender's client
-	sRouter.on('clientRequestApproval', function(socket,args,next){
-		socket.emit('serverRequestApproval', data)
+	sRouter.on('requestUpload', function(socket,args,next){
+		socket.emit('requestDownload', data)
 	})
 	//listen for approval responses from receiver's client
-	sRouter.on('clientSendResponse', function(socket,args,next){
-		socket.emit('serverSendResponse', data)
+	sRouter.on('transferApproval', function(socket,args,next){
+		socket.emit('transferResponse', data)
 	})
 
 }
