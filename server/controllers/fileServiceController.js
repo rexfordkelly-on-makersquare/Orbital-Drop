@@ -50,8 +50,27 @@ module.exports = function(busboy, uuid, path, fs, io) {
 
 			// delete file after user has downloaded
 			response.on('finish',function(){
-			  fs.unlinkSync(filepath);
+			  fs.unlink(filepath, function(error){
+			  	if(error)
+			  		console.log(error)
+			  });
 			})
+		},
+		delete: function(request, response, error) {
+			var filepath = __dirname + '/uploads/' + request.body.uniqueId + request.body.filename;
+			var filename = request.body.uniqueId + request.body.filename;
+
+			fs.unlink(filepath, function(error){
+			  if(error)
+			    console.log(error);
+			  response.send ({
+			        status: "200",
+			        response: {
+			          filename: filename,
+			          success: true
+			        }
+			  });   
+			});
 		}
 	})
 	
