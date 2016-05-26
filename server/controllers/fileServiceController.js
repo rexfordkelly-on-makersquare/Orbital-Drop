@@ -3,7 +3,15 @@ const busboy = require('busboy');
 const uuid = require('uuid');
 const path = require('path');
 
-module.exports = function() {
+module.exports = function(socketedServer) {
+
+	// var users = {}
+	// var incrementId = 0;
+	// socketedServer.on('connection', function(socket){
+	// 	users[incrementId] = socket;
+	// 	incrementId++;
+	// 	console.log('socket')
+	// })
 
 	return({
 		upload : function(request, response, error){
