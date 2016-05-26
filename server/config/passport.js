@@ -1,5 +1,5 @@
 var User = require('../controllers/userController.js')
-var userList = require('../models/userModel.js')
+var userList = []
 
 
 
@@ -22,7 +22,6 @@ module.exports = function(passport){
     //serialize our users
 
     passport.deserializeUser(function(id, done) {
-        console.log(id)
         for(var i = 0; i < userList.length; i++){
             if(userList[i].userId == id){
                 done(null, userList[i])
@@ -42,6 +41,7 @@ module.exports = function(passport){
 
     function(token, refreshToken, profile, done) {
         process.nextTick(function(){
+            console.log(profile)
             
             userList.push(User.createUser(token, profile._json.login, profile._json.id))
 

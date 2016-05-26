@@ -1,5 +1,5 @@
 var userMethods = {
-	createUser : function(username, token, userId){
+	createUser : function(token, username, userId){
 		//create new user model
 		return ({
 			token : token,

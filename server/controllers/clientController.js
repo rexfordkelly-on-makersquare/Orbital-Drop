@@ -2,10 +2,14 @@ var userList = require('../models/userModel.js')
 
 var helper = {
     ensureLogin : function(req,res){
-        res.send("profile Page")
+        if(req.isAuthenticated()){
+            res.send("profile Page")
+        } else {
+            res.redirect('/')
+        }
     },
     logout : function(req, res) {
-        req.logout();
+        req.session.destroy();
         res.redirect('/');
     },
     isLoggedIn: function(req, res, next) {
@@ -18,7 +22,7 @@ var helper = {
         
     },
     sendJSON: function(req,res) {
-        res.send(req.user)
+        res.json(req.user)
     }
 }
 
