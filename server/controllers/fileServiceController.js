@@ -9,8 +9,8 @@ module.exports = function(socketedServer) {
 	// adds event listeners to the http.Server instance
 	var io = socketIO(socketedServer);
 	/*** 
-		The users object will hold the state of our application.  When a new user establishes a socket connection.
-		We will add/remove the user instance and emit the users list to all clients.
+		The users object will hold the state of our application.  When a new user establishes/ends a 
+		socket connection, we will add/remove the user instance and emit the users list to all clients.
 	***/
 	io.on('connection', function(socket){
 		socket.on('news', function(data){
