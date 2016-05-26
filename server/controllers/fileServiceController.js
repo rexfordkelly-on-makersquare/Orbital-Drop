@@ -13,9 +13,6 @@ module.exports = function(socketedServer) {
 		socket connection, we will add/remove the user instance and emit the users list to all clients.
 	***/
 	io.on('connection', function(socket){
-		socket.on('news', function(data){
-			console.log(data, 'sholud be hello wolrd')
-		})
 		// will be github id
 		users[socket.id] = socket.id;
 		io.sockets.emit('updateUsers', users)
