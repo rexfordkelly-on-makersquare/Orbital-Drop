@@ -1,7 +1,7 @@
 
 var fileServiceController = require('../controllers/fileServiceController.js')
 module.exports = function(app, express, socketedServer){
-	
+
 	var helpers = fileServiceController(socketedServer);
 	app.get('/files/download', helpers.download);
 	app.post('/files/upload', helpers.upload);
