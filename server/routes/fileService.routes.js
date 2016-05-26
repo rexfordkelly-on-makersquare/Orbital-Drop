@@ -8,7 +8,7 @@ module.exports = function(app, express, socketedServer){
 	app.delete('/files/', helpers.delete);
 
 	// testing route remove after client session is completed
-	//app.get('/files/', helpers.test);
+	app.get('/files/', helpers.test);
 
 	// need to refactor sockets
 	// sockets.on('connection',function(socket){

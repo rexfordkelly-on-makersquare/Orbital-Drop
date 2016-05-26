@@ -2,25 +2,33 @@ const fs = require('fs');
 const busboy = require('busboy');
 const uuid = require('uuid');
 const path = require('path');
-const socketIO = require('socket.io')
-var users = require('../models/activeUserModel.js')
+const socketIO = require('socket.io');
+var users = require('../models/activeUserModel.js');
+var util = require('../utils/fileServiceUtil.js');
 
-module.exports = function(socketedServer) {
+
+module.exports = function(socketedServer){
 	// adds event listeners to the http.Server instance
 	var io = socketIO(socketedServer);
+	var userSockets = {}
+	var githubId = 0;
 	/*** 
 		The users object will hold the state of our application.  When a new user establishes/ends a 
 		socket connection, we will add/remove the user instance and emit the users list to all clients.
 	***/
 	io.on('connection', function(socket){
 		// will be github id
-		users[socket.id] = socket.id;
-		io.sockets.emit('updateUsers', users)
-
+		userSockets[githubId] = socket;
+		users[socket.id] = util.createUser(socket.id, githubId);
+		io.sockets.emit('updateUsers', users);
+		githubId++;
 		socket.on('disconnect', function () {
-		  delete users[socket.id]
-		  io.sockets.emit('updateUsers', users)
-		 });
+			var gitId = users[socket.id].githubId
+			delete userSockets[gitId];
+		 	delete users[socket.id];
+
+			io.sockets.emit('updateUsers', users);
+		});
 	})
 
 	return({
@@ -73,30 +81,30 @@ module.exports = function(socketedServer) {
 			response.on('finish',function(){
 			  fs.unlink(filepath, function(error){
 			  	if(error)
-			  		console.log(error)
+			  		console.log(error);
 			  });
-			})
+			});
 		},
 		delete: function(request, response, error) {
 			var filepath = __dirname + '/uploads/' + request.body.uniqueId + request.body.filename;
 			var filename = request.body.uniqueId + request.body.filename;
 
 			fs.unlink(filepath, function(error){
-			  if(error)
-			    console.log(error);
-			  response.send ({
-			        status: "200",
-			        response: {
-			          filename: filename,
-			          success: true
-			        }
-			  });   
+				if(error)
+					console.log(error);
+				response.send ({
+					status: "200",
+					response: {
+					filename: filename,
+					success: true
+					}
+				});   
 			});
 		},
-		// test: function(request, response, error) {
-		// 	console.log('serve up')
-		// 	response.sendFile(path.resolve('test/test.html'));
-		// }
+		test: function(request, response, error) {
+			console.log('serve up')
+			response.sendFile(path.resolve('controllers/test/test.html'));
+		}
 
 	})
 	
