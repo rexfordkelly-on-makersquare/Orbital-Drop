@@ -1,23 +1,25 @@
-
+var userList = require('../models/userModel.js')
 
 var helper = {
-	ensureLogin : function(req,res){
-		require('connect-ensure-login').ensureLoggedIn()
-	},
-	logout : function(req, res) {
+    ensureLogin : function(req,res){
+        res.send("profile Page")
+    },
+    logout : function(req, res) {
         req.logout();
         res.redirect('/');
     },
     isLoggedIn: function(req, res, next) {
-    //eventually this will be implemented as middleware
-    //for each route, and we'll be checking to se if the
-    //user is logged in.
 
-    if (req.isAuthenticated()){
-        return next();
+        if (req.isAuthenticated()){
+            return next();
+        } else {
+            res.redirect('/');
+        }
+        
+    },
+    sendJSON: function(req,res) {
+        res.send(req.user)
     }
-    res.redirect('/');
-	}
 }
 
 module.exports = helper

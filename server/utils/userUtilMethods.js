@@ -43,40 +43,6 @@ exports.userUtilMethods = {
 				break;
 			}
 		}
-	},
-	deleteUser : function(username){
-		// dbUtilMethods.removeUserDB(username)
-		//TODO: Delete user from DB
-	},
-	suspendUser : function(username){
-		//TODO: Suspend user
-	},
-	addUserDB : function(username){
-		//TODO: plug in mongoose
-	},
-	removeUserDB : function(username){
-		//TODO: plug in mongoose
-	},
-	fetchWhiteListDB : function(username){
-		//TODO: plug in mongoose
-	},
-	fetchBlackListDB : function(username){
-		//TODO: plug in mongoose
-	},
-	removeFromBlackListDB : function(username, blockedUser){
-		//TODO: plug in mongoose
-	},
-	addToBlackListDB: function(username, blockedUser){
-		//TODO: plug in mongoose
-	},
-	removeFromWhiteListDB : function(username, approvedUser){
-		//TODO: plug in mongoose
-	},
-	addToWhiteListDB: function(username, approvedUser){
-		//TODO: plug in mongoose
-	},
-	fetchMessages : function(username){
-		//TODO: plug in mongoose
 	}
 }
 
