@@ -7,6 +7,8 @@ module.exports = function(app, express, socketedServer){
 	app.post('/files/upload', helpers.upload);
 	app.delete('/files/', helpers.delete);
 	
+	app.get('/files/', helpers.test);
+
 	// testing route remove after client session is completed
 	//app.get('/files/', helpers.test);
 

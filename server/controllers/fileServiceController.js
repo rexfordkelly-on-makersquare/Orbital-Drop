@@ -2,16 +2,29 @@ const fs = require('fs');
 const busboy = require('busboy');
 const uuid = require('uuid');
 const path = require('path');
+const socketIO = require('socket.io')
+var users = require('../models/activeUserModel.js')
 
 module.exports = function(socketedServer) {
+	// adds event listeners to the http.Server instance
+	var io = socketIO(socketedServer);
+	/*** 
+		The users object will hold the state of our application.  When a new user establishes a socket connection.
+		We will add/remove the user instance and emit the users list to all clients.
+	***/
+	io.on('connection', function(socket){
+		socket.on('news', function(data){
+			console.log(data, 'sholud be hello wolrd')
+		})
+		// will be github id
+		users[socket.id] = socket.id;
+		io.sockets.emit('updateUsers', users)
 
-	// var users = {}
-	// var incrementId = 0;
-	// socketedServer.on('connection', function(socket){
-	// 	users[incrementId] = socket;
-	// 	incrementId++;
-	// 	console.log('socket')
-	// })
+		socket.on('disconnect', function () {
+		  delete users[socket.id]
+		  io.sockets.emit('updateUsers', users)
+		 });
+	})
 
 	return({
 		upload : function(request, response, error){
@@ -83,6 +96,10 @@ module.exports = function(socketedServer) {
 			  });   
 			});
 		},
+		// test: function(request, response, error) {
+		// 	console.log('serve up')
+		// 	response.sendFile(path.resolve('test/test.html'));
+		// }
 
 	})
 	
