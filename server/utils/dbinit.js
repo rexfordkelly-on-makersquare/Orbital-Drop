@@ -13,6 +13,7 @@ db.on('error', console.error.bind(console, 'DB connection error:'));
 db.once('open', function(){
   console.log("Database successfully connected");
 
+//setup user schema
   var Users = new Schema({
     token : String,
     username : String,
