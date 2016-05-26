@@ -7,24 +7,27 @@ var users = require('../models/activeUserModel.js');
 var util = require('../utils/fileServiceUtil.js');
 
 
-module.exports = function(socketedServer){
+module.exports = function(socketedServer, express){
 	// adds event listeners to the http.Server instance
 	var io = socketIO(socketedServer);
 	var userSockets = {}
-	var githubId = 0;
+
 	/*** 
 		The users object will hold the state of our application.  When a new user establishes/ends a 
 		socket connection, we will add/remove the user instance and emit the users list to all clients.
 	***/
 	io.on('connection', function(socket){
-		// will be github id
-		userSockets[githubId] = socket;
-		users[socket.id] = util.createUser(socket.id, githubId);
-		io.sockets.emit('updateUsers', users);
-		githubId++;
+		//console.log(express)
+		// Add to users object when have a sessionId
+		socket.on('createUser', function(sessionId){
+			users[sessionId] = util.createUser(socket.id, sessionId);
+			userSockets[socket.id] = socket;
+			io.sockets.emit('updateUsers', users);
+		})
+
 		socket.on('disconnect', function () {
-			var gitId = users[socket.id].githubId
-			delete userSockets[gitId];
+			var user = util.findUserBySocketId(socket.id);
+			delete userSockets[user.id];
 		 	delete users[socket.id];
 
 			io.sockets.emit('updateUsers', users);
@@ -46,9 +49,11 @@ module.exports = function(socketedServer){
 		      fstream = fs.createWriteStream(__dirname + '/uploads/' + uniqueId + filename);
 		      file.pipe(fstream);
 
-		      // emit a download to the user that is receiving the upload
-		      // Refactor to store unique id in global user object 
-		      // clients[1].emit('stardDownload', filename, uniqueId);
+		      // add uniqueId and filename to user receiving download
+		      // users[req.user.id].files.push(util.createFile(uniqueId, filename));
+
+		      // emit a download prompt to the user that is receiving the upload
+		      // userSockets[1].emit('requestDownload', filename);
 		      
 		    });
 		   
