@@ -6,7 +6,7 @@ module.exports = function() {
 
 	return({
 	serveLoginPage : function(request, response) {
-  		// response.render('login.html')
+  		response.send('login page')
 	},
 	
 	githubRedirect : passport.authenticate('github'),

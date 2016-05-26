@@ -1,5 +1,5 @@
 const db = require("./dbUtilMethods.js")
-console.log("Initializing user utility methods") 
+console.log("Initializing user utility methods")
 
 exports.userUtilMethods = {
 	createUser : function(username, token){
@@ -15,11 +15,11 @@ exports.userUtilMethods = {
         	chatMessages : [],
         	status : true
 		})
-	},	
+	},
 	blacklist: function(username, blockedUser){
 		exports.userUtilMethods.unWhiteList(username, blockedUser)
 		username.blackList.push(blockedUser)
-		db.addToBlackListDB(username, blockedUser)		
+		db.addToBlackListDB(username, blockedUser)
 	},
 	whitelist: function(username, approvedUser){
 		exports.userUtilMethods.unBlackList(username, approvedUser)
@@ -43,8 +43,7 @@ exports.userUtilMethods = {
 				break;
 			}
 		}
-	},
-	
+	};
 }
 
-console.log("Initializing user utility methods: Complete") 
+console.log("Initializing user utility methods: Complete")
