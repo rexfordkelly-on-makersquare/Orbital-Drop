@@ -1,14 +1,12 @@
 const        express = require("express");
 const 			http = require('http');
 
-var app = express();
-var server = http.createServer(app);
-var io = require('socket.io').listen(server)
+var app = require('express')();
+var socketedServer = require('http').Server(app);
 
-require('./routes/router.js')(app, express, io);
+require('./routes/router.js')(app, express, socketedServer);
 
-server.listen(process.env.PORT || 3000);
-console.log("server listening on 3000")
+socketedServer.listen(process.env.PORT || 3000);
 
 
 
