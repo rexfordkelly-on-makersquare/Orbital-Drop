@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
-var dbURI = 'mongodb://localhost/airdrop';
-var db = mongoose.connection;
-var Schema = mongoose.Schema;
-var dbUtilMethods = require ('../utils/dbUtilMethods');
+const mongoose = require('mongoose');
+const dbURI = 'mongodb://localhost/airdrop';
+const db = mongoose.connection;
+const Schema = mongoose.Schema;
+const dbUtilMethods = require ('../utils/dbUtilMethods');
 
 mongoose.Promise = global.Promise;
 
@@ -15,19 +15,19 @@ db.once('open', function(){
 });
 
 //setup user schema
-  var Users = new Schema({
-    token : String,
-    username : String,
-    userId : Number,
-    notifications: [],
-    blackList : [],
-    whiteList : [],
-    directMessages : [],
-    nodeList : [],
-    chatMessages : [],
-    status : Boolean
-  });
+const Users = new Schema({
+  token : String,
+  username : String,
+  userId : Number,
+  notifications: [],
+  blackList : [],
+  whiteList : [],
+  directMessages : [],
+  nodeList : [],
+  chatMessages : [],
+  status : Boolean
+});
 
-  var UsersModel = mongoose.model('Users', Users);
+const UsersModel = mongoose.model('Users', Users);
 
-  module.exports = UsersModel;
+module.exports = UsersModel;
