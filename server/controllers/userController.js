@@ -1,6 +1,9 @@
-var userMethods = {
-	createUser : function(username, token, userId){
-		//create new user model
+const db = require('../utils/dbUtilMethods.js')
+
+
+const userUtilMethods = {
+	createUser : function(token,username,userId){
+		db.addUserToDbase(token,username,userId)
 		return ({
 			token : token,
         	username : username,
@@ -14,38 +17,17 @@ var userMethods = {
         	status : true
 		})
 	},
-	findUser : function(userId, cb){
-		
-		//method that interfaces with model collections and
-		//checks to see if a user is already in the system.
-		//the commented out section below is the callback after
-		//we interact with the db
-		
-
-		// function(){
-		// 	if(found){
-		// 		cb(null, user)
-		// 	} else {
-		// 		cb(true, null)
-		// 	}
-	},	
 	blacklist: function(username, blockedUser){
-		//black lists a user, removing him from white list if he's whites
-		//listen and updates the db
 		exports.userUtilMethods.unWhiteList(username, blockedUser)
 		username.blackList.push(blockedUser)
-		db.addToBlackListDB(username, blockedUser)		
+		db.addToBlackListDB(username, blockedUser)
 	},
 	whitelist: function(username, approvedUser){
-		// white lists a user, removing him from the backlist if he's blacklisted
-		// and updates the db
 		exports.userUtilMethods.unBlackList(username, approvedUser)
 		username.whiteList.push(blockedUser)
 		db.addToWhiteListDB(username,blockedUser)
 	},
 	unBlackList: function(username, unblockedUser){
-		//removes from blacklist, helper method for whiteList
-		//but can also be used standalone
 		for(var i = 0; i < username.blacklist.length; i++){
 			if(username.blacklist[i] === unblockedUser){
 				username.blacklist.splice(i,1);
@@ -55,8 +37,6 @@ var userMethods = {
 		}
 	},
 	unWhiteList: function(username, unapprovedUser){
-		//removes from whitelist, helpermethod to blacklist
-		//but can also be used standalone
 		for(var i = 0; i < username.whitelist.length; i++){
 			if(username.whitelist[i] === unapprovedUser){
 				username.whiteList.splice(i,1);
@@ -67,4 +47,4 @@ var userMethods = {
 	}
 }
 
-module.exports = userMethods
+module.exports = userUtilMethods

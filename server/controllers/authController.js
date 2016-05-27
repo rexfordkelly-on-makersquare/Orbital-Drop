@@ -5,8 +5,16 @@ const passport = require('passport');
 module.exports = function() {
 
 	return({
-	serveLoginPage : function(request, response) {
-  		response.send('login page')
+	checkAuth : function(req, res, next) {
+  		if(req.isAuthenticated()){
+  			res.redirect('/profile')
+  		} else {
+			next()
+  		}
+	},
+
+	serveLogin : function(req,res){
+		res.send('yeay')
 	},
 	
 	githubRedirect : passport.authenticate('github'),
