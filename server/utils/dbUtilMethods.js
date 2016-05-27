@@ -13,65 +13,66 @@ var helpers = {
 
     user.save(function(err) {
       if (err) {
-        console.log (err);
-      } else {
-          console.log("New user successfully added to DB");
-        }
+        console.log("New user not added to DB");
+        throw err;
+      }
+
+      console.log("New user successfully added to DB");
     });
   },
 
   addToBlackListDbase : function (username, blockedUser) {
 
-  UsersModel.update({username: username}, {$push:{blackList : blockedUser}},
+  UsersModel.update({username: username}, {$push:{blackList : blockedUser}}, 
     function (err){
       if (err) {
         console.log("Add to blacklist failed");
-        console.log (err);
-      } else {
-          console.log("Blacklist updated in DB");
-        }
-    });
-},
+        throw err;
+      }
 
-    addToWhiteListDbase : function (username, approvedUser) {
+    console.log("Blacklist updated in DB")
+    })
+  },
 
-  UsersModel.update({username: username}, {$push:{whiteList : approvedUser}},
+  addToWhiteListDbase : function (username, approvedUser) {
+
+  UsersModel.update({username: username}, {$push:{whiteList : approvedUser}}, 
     function (err){
       if (err) {
         console.log("Add to whitelist failed");
-        console.log (err);
-      } else {
-          console.log("Whitelist updated in DB");
-        }
-    });
-},
+        throw err;
+      }
+
+    console.log("Whitelist updated in DB")
+    })
+  },
 
   removeFromBlackListDbase : function (username, blockedUser) {
 
-  UsersModel.update({username: username}, {$pull:{blackList : blockedUser}},
+  UsersModel.update({username: username}, {$pull:{blackList : blockedUser}}, 
     function (err){
       if (err) {
         console.log("Remove from blacklist failed");
-        console.log (err);
-      } else {
-          console.log("Blacklist user removed in DB");
-        }
-    });
-},
+        throw err;
+      }
+
+    console.log("Blacklist user removed in DB")
+    })
+  },
 
   removeFromWhiteListDbase : function (username, approvedUser) {
 
-  UsersModel.update({username: username}, {$pull:{whiteList : approvedUser}},
+  UsersModel.update({username: username}, {$pull:{whiteList : approvedUser}}, 
     function (err){
       if (err) {
         console.log("Remove from whitelist failed");
-        console.log (err);
-      } else {
-          console.log("Whitelist user removed in DB");
-        }
-    });
-  }
-};
+        throw err;
+      }
 
-module.exports = helpers;
+    console.log("Whitelist user removed in DB")
+    })
+  }
+}
+
+module.exports = helpers
 

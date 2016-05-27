@@ -1,9 +1,8 @@
-var mongoose = require('mongoose');
-var dbURI = 'mongodb://localhost/airdrop';
-var db = mongoose.connection;
-var Schema = mongoose.Schema;
-var dbUtilMethods = require ('../utils/dbUtilMethods');
-var uniqueValidator = require('mongoose-unique-validator');
+const mongoose = require('mongoose');
+const dbURI = 'mongodb://localhost/airdrop';
+const db = mongoose.connection;
+const Schema = mongoose.Schema;
+const dbUtilMethods = require ('../utils/dbUtilMethods');
 
 mongoose.Promise = global.Promise;
 
@@ -16,21 +15,19 @@ db.once('open', function(){
 });
 
 //setup user schema
-  var Users = new Schema({
-    token : String,
-    username : String,
-    userId : { type : Number, required : true, unique : true},
-    notifications: [],
-    blackList : [],
-    whiteList : [],
-    directMessages : [],
-    nodeList : [],
-    chatMessages : [],
-    status : Boolean
-  });
+const Users = new Schema({
+  token : String,
+  username : String,
+  userId : Number,
+  notifications: [],
+  blackList : [],
+  whiteList : [],
+  directMessages : [],
+  nodeList : [],
+  chatMessages : [],
+  status : Boolean
+});
 
-Users.plugin(uniqueValidator);
+const UsersModel = mongoose.model('Users', Users);
 
-  var UsersModel = mongoose.model('Users', Users);
-
-  module.exports = UsersModel;
+module.exports = UsersModel;

@@ -18,32 +18,18 @@ const userUtilMethods = {
 		})
 	},
 	blacklist: function(username, blockedUser){
-		exports.userUtilMethods.unWhiteList(username, blockedUser)
-		username.blackList.push(blockedUser)
+		this.unWhiteList(username, blockedUser)
 		db.addToBlackListDB(username, blockedUser)
 	},
 	whitelist: function(username, approvedUser){
-		exports.userUtilMethods.unBlackList(username, approvedUser)
-		username.whiteList.push(blockedUser)
+		this.unBlackList(username, approvedUser)
 		db.addToWhiteListDB(username,blockedUser)
 	},
 	unBlackList: function(username, unblockedUser){
-		for(var i = 0; i < username.blacklist.length; i++){
-			if(username.blacklist[i] === unblockedUser){
-				username.blacklist.splice(i,1);
-				db.removeFromBlackListDB(username,blockedUser);
-				break;
-			}
-		}
+		db.removeFromBlackListDB(username,blockedUser);	
 	},
 	unWhiteList: function(username, unapprovedUser){
-		for(var i = 0; i < username.whitelist.length; i++){
-			if(username.whitelist[i] === unapprovedUser){
-				username.whiteList.splice(i,1);
-				db.removeFromWhiteListDB(username,blockedUser);
-				break;
-			}
-		}
+		db.removeFromWhiteListDB(username,blockedUser);
 	}
 }
 
