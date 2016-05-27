@@ -3,11 +3,11 @@ const Busboy = require('busboy');
 const uuid = require('uuid');
 const path = require('path');
 const socketIO = require('socket.io');
-const users = require('../models/activeUserModel.js');
 const util = require('../utils/fileServiceUtil.js');
 const mime = require('mime-types');
 const multiparty = require('multiparty');
 
+var users = require('../models/activeUserModel.js');
 
 module.exports = function(express, socketedServer){
 	// adds event listeners to the http.Server instance
