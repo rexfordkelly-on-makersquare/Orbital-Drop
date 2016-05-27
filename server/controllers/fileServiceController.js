@@ -67,9 +67,8 @@ module.exports = function(express, socketedServer){
 				// asychronously write a file using a stream to uploads folder
 				fstream = fs.createWriteStream(__dirname + '/../uploads/' + uniqueId + filename);
 				file.pipe(fstream);
-				
+				// added another multi form parser because busboy doensn't grab all the fields in the form at once
 				var form = new multiparty.Form();
-				 
 			    form.parse(request, function(err, fields) {
 			      var recieverUserId = fields.recieverUserId[0]
 			      var filename = fields.filename[0]
@@ -77,8 +76,6 @@ module.exports = function(express, socketedServer){
 			      users[recieverUserId].files.push(util.createFile(uniqueId, filename));
 			      // emit a download prompt to the user that is receiving the upload
 			      userSockets[recieverUserId].emit('requestTransfer', {filename:filename, senderUserId: userId});
-			      
-			      //userSockets[recieverUserId].emit('testDownload','dunNeedNothingOnTESTTTTz');
 			    });
 			});
 

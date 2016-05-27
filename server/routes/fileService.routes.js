@@ -6,7 +6,8 @@ module.exports = function(app, express, socketedServer){
 	app.post('/files/upload', helpers.upload);
 	app.delete('/files/', helpers.delete);
 
-	app.get('/connect', helpers.test);
+	// testing purposes
+	//app.get('/connect', helpers.test);
 
 	
 
