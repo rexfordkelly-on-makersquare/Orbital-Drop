@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8" />
     <title>Choosely</title>
-    <link rel="stylesheet" type="text/css" href="styles/style.css" />
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
     
   </head>
@@ -19,10 +18,12 @@
     <script type="text/javascript">
     $(document).ready(function(){
         var socket = io();
-        socket.emit('news', { hello: 'world' });
+        $.get('/api/user_profiles',function(response){
+            var userId = response.userId
+            socket.emit('createUser', userId)
+        })
         socket.on('updateUsers', function(users){
             console.log(users,'whole user obj')
-
         });
         // gets send to specific user wanting to recieve download
         socket.on('decideIfDownload', function(filename, uniqueId){

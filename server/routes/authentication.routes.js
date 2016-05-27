@@ -7,7 +7,10 @@ module.exports = function(app) {
   app.use(session({secret: 'mySecretKey'}))
   app.use(passport.initialize());
   app.use(passport.session());
-
+  app.use(function(req,res,next){
+  	//console.log(req.session)
+  	next();
+  })
   var helpers = authController(passport)
 
   app.get('/', helpers.serveLoginPage);

@@ -7,7 +7,7 @@ var users = require('../models/activeUserModel.js');
 var util = require('../utils/fileServiceUtil.js');
 
 
-module.exports = function(socketedServer, express){
+module.exports = function(express, socketedServer){
 	// adds event listeners to the http.Server instance
 	var io = socketIO(socketedServer);
 	var userSockets = {}
@@ -17,8 +17,6 @@ module.exports = function(socketedServer, express){
 		socket connection, we will add/remove the user instance and emit the users list to all clients.
 	***/
 	io.on('connection', function(socket){
-		//console.log(express)
-		// Add to users object when have a sessionId
 		socket.on('createUser', function(sessionId){
 			users[sessionId] = util.createUser(socket.id, sessionId);
 			userSockets[socket.id] = socket;
@@ -26,10 +24,10 @@ module.exports = function(socketedServer, express){
 		})
 
 		socket.on('disconnect', function () {
-			var user = util.findUserBySocketId(socket.id);
-			delete userSockets[user.id];
-		 	delete users[socket.id];
+			var user = util.findUserBySocketId(socket.id, users);
 
+			delete userSockets[socket.id];
+		 	delete users[user.userId];
 			io.sockets.emit('updateUsers', users);
 		});
 	})
@@ -107,8 +105,14 @@ module.exports = function(socketedServer, express){
 			});
 		},
 		test: function(request, response, error) {
-			console.log('serve up')
-			response.sendFile(path.resolve('controllers/test/test.html'));
+			if(request.session.passport){
+				userId = request.session.passport.user
+				response.sendFile(path.resolve('controllers/test/test.html'));
+			}else{
+				response.send('login puhleaze');
+			}
+			
+			
 		}
 
 	})

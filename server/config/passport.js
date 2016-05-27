@@ -1,5 +1,5 @@
 var User = require('../controllers/userController.js')
-var userList = require('../models/userModel.js')
+var userList = [];
 
 
 
