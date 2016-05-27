@@ -8,7 +8,7 @@ require('./routes/router.js')(app, express, socketedServer);
 
 socketedServer.listen(process.env.PORT || 3000);
 
-module.exports = server
+module.exports = socketedServer
 
 
 

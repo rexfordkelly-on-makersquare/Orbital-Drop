@@ -1,12 +1,14 @@
 //grabs the user model we created in dbinit
-var UsersModel = require('./dbinit.js');
+var UsersModel = require('../models/userModel.js');
 
+var helpers = {
 
-exports.addUserToDbase = function (username, token) {
+  addUserToDbase : function (token, username, userId) {
 
     var user = new UsersModel({
+      token : token,
       username : username,
-      token : token
+      userId : userId
     });
 
     user.save(function(err) {
@@ -17,9 +19,9 @@ exports.addUserToDbase = function (username, token) {
 
       console.log("New user successfully added to DB");
     });
-};
+  },
 
-exports.addToBlackListDbase = function (username, blockedUser) {
+  addToBlackListDbase : function (username, blockedUser) {
 
   UsersModel.update({username: username}, {$push:{blackList : blockedUser}}, 
     function (err){
@@ -30,9 +32,9 @@ exports.addToBlackListDbase = function (username, blockedUser) {
 
     console.log("Blacklist updated in DB")
     })
-}
+},
 
-exports.addToWhiteListDbase = function (username, approvedUser) {
+    addToWhiteListDbase : function (username, approvedUser) {
 
   UsersModel.update({username: username}, {$push:{whiteList : approvedUser}}, 
     function (err){
@@ -43,9 +45,9 @@ exports.addToWhiteListDbase = function (username, approvedUser) {
 
     console.log("Whitelist updated in DB")
     })
-}
+},
 
-exports.removeFromBlackListDbase = function (username, blockedUser) {
+  removeFromBlackListDbase : function (username, blockedUser) {
 
   UsersModel.update({username: username}, {$pull:{blackList : blockedUser}}, 
     function (err){
@@ -56,9 +58,9 @@ exports.removeFromBlackListDbase = function (username, blockedUser) {
 
     console.log("Blacklist user removed in DB")
     })
-}
+},
 
-exports.removeFromWhiteListDbase = function (username, approvedUser) {
+  removeFromWhiteListDbase : function (username, approvedUser) {
 
   UsersModel.update({username: username}, {$pull:{whiteList : approvedUser}}, 
     function (err){
@@ -69,5 +71,8 @@ exports.removeFromWhiteListDbase = function (username, approvedUser) {
 
     console.log("Whitelist user removed in DB")
     })
+  }
 }
+
+module.exports = helpers
 

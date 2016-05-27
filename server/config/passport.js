@@ -41,7 +41,6 @@ module.exports = function(passport){
 
     function(token, refreshToken, profile, done) {
         process.nextTick(function(){
-            console.log(profile)
             
             userList.push(User.createUser(token, profile._json.login, profile._json.id))
 
