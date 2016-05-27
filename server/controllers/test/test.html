@@ -14,30 +14,58 @@
 
     <!-- change all to min to speed up load-->
     <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
-
+    <input type="file" custom-on-change="uploadFile"/>
     <script type="text/javascript">
     $(document).ready(function(){
         var socket = io();
+        // resopnse - object
         $.get('/api/user_profiles',function(response){
             var userId = response.userId
             socket.emit('createUser', userId)
         })
+        // users - object
         socket.on('updateUsers', function(users){
-            console.log(users,'whole user obj')
+            // Users state here
         });
+        // response - object
+        socket.on('requestTransfer',function(response){
+            var senderUserId = response.senderUserId
+            var filename = response.filename
+            /*** user will choose accept or reject.  
+            1. A decision will be emitted
+            2. Accept will cause a forced get request. Reject will send a delete 
+               request for file.
+            ***/
+            // temporarily true, let user decide
+            var choice = true;
+            if(choice){
+                window.open('/download');
+            }else{
+                $.ajax({
+                    url: '/',
+                    type: 'DELETE',
+                    success: function(result) {
+                        console.log(result, 'should be result of deletion')
+                    }
+                });
+            }
+            
+            
+            socket.emit('transferChoice',{
+                            senderUserId:senderUserId,
+                            choice:choice
+                        })
+
+        })
+        // decision - boolean
+        socket.on('transferDecision', function(decision){
+            // update user on what other user decided
+
+        })
         // gets send to specific user wanting to recieve download
-        socket.on('decideIfDownload', function(filename, uniqueId){
-            console.log(filename,uniqueId)
-            $.ajax({
-                url: '/',
-                type: 'DELETE',
-                data:{uniqueId: uniqueId,
-                      filename: filename},
-                success: function(result) {
-                    console.log(result, 'should be result of deletgion')
-                }
-            });
-            //window.open('/download?filename='+filename+'&uniqueId='+uniqueId);
+        socket.on('testDownload', function(filename, uniqueId){
+            
+            window.open('/download');
 
         });
         $('.home').click(function(e){location.reload();})

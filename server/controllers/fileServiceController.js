@@ -22,17 +22,27 @@ module.exports = function(express, socketedServer){
 			io.sockets.emit('updateUsers', users);
 		})
 
+		socket.on('transferChoice', function(response){
+			var decision = response.choice;
+			var senderUserId = response.senderUserId;
+			userSockets[senderUserId].emit('transferDecision', decision);
+		})
+
 		socket.on('disconnect', function () {
 			var user = util.findUserBySocketId(socket.id, users);
 			// remove both socket and user on socket closing
 			delete userSockets[user.userId];
 		 	delete users[user.userId];
-		 	/*** ADD DELETION OF FILES IN UPLOADS FOLDER IF USER DISCONNECTS ***/
 			io.sockets.emit('updateUsers', users);
+		 	/*** BUILD DELETION OF FILES IN UPLOADS FOLDER IF USER DISCONNECTS ***/
 		});
 	})
 
 	return({
+		/*** 
+			Dependencies:
+				request.body.recieverUserId
+		***/
 		upload : function(request, response, error){
 			// add middleware validation
 			var userId;
@@ -41,7 +51,7 @@ module.exports = function(express, socketedServer){
 			}else{
 				res.status(500).send({error:'User has no session!'});
 			}
-
+			var recieverUserId = request.body.recieverUserId
 			/*** 
 				bus boy is responsible for parsing multipart form data since express 4.0 droped multipart handling
 				https://www.npmjs.com/package/busboy
@@ -55,9 +65,10 @@ module.exports = function(express, socketedServer){
 				fstream = fs.createWriteStream(__dirname + '/uploads/' + uniqueId + filename);
 				file.pipe(fstream);
 				// add uniqueId and filename to user receiving download
-				users[userId].files.push(util.createFile(uniqueId, filename));
+				users[recieverUserId].files.push(util.createFile(uniqueId, filename));
 				// emit a download prompt to the user that is receiving the upload
-				userSockets[userId].emit('requestDownload', filename);
+				//userSockets[recieverUserId].emit('requestTransfer', {filename:filename, senderUserId: userId});
+				userSockets[recieverUserId].emit('testDownload','dunNeedNothingOnTESTTTTz');
 			});
 
 			// close request
@@ -77,7 +88,14 @@ module.exports = function(express, socketedServer){
 				res.status(500).send({error:'User has no session!'});
 			}
 
-			var filepath = __dirname + '/uploads/' + request.query.uniqueId + request.query.filename;
+			/*** build redirect to application homepage if have no files ***/
+
+			var file;
+			if(users[userId].files.length){
+				file = users[userId].files[0]
+			}
+
+			var filepath = __dirname + '/uploads/' + file.fileId + file.filename;
 			var filename = path.basename(filepath);
 			var mimetype = mime.lookup(filepath);
 
@@ -98,9 +116,23 @@ module.exports = function(express, socketedServer){
 			});
 		},
 		delete: function(request, response, error) {
-			var filepath = __dirname + '/uploads/' + request.body.uniqueId + request.body.filename;
-			var filename = request.body.uniqueId + request.body.filename;
+			// add middleware validation
+			var userId;
+			if(request.session.passport){
+				userId = request.session.passport.user
+			}else{
+				res.status(500).send({error:'User has no session!'});
+			}
 
+			var file;
+			if(users[userId].files.length){
+				file = users[userId].files[0]
+			}
+
+			var filepath = __dirname + '/uploads/' + file.fileId + file.filename;
+			var filename = path.basename(filepath);
+
+			/*** Build check if file exists ***/
 			fs.unlink(filepath, function(error){
 				if(error)
 					console.log(error);
