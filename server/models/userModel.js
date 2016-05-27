@@ -3,6 +3,7 @@ var dbURI = 'mongodb://localhost/airdrop';
 var db = mongoose.connection;
 var Schema = mongoose.Schema;
 var dbUtilMethods = require ('../utils/dbUtilMethods');
+var uniqueValidator = require('mongoose-unique-validator');
 
 mongoose.Promise = global.Promise;
 
@@ -18,7 +19,7 @@ db.once('open', function(){
   var Users = new Schema({
     token : String,
     username : String,
-    userId : Number,
+    userId : { type : Number, required : true, unique : true},
     notifications: [],
     blackList : [],
     whiteList : [],
@@ -27,6 +28,8 @@ db.once('open', function(){
     chatMessages : [],
     status : Boolean
   });
+
+Users.plugin(uniqueValidator);
 
   var UsersModel = mongoose.model('Users', Users);
 
