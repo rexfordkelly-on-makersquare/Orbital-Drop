@@ -5,7 +5,7 @@ var should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('roothpath', function(){
+describe('Root path', function(){
 
 	it("should get rootpath '/'", function(done){
 		chai.request(server)
@@ -38,6 +38,14 @@ describe('Authentication Routes', function(){
       		done();
 		})
 	})
+	it("should get path '/login/github/return'", function(done){
+		chai.request(server)
+		.get('/login/github')
+		.end(function(err,res){
+	  		res.should.have.status(200);
+      		done();
+		})
+	})
 })
 
 describe('Client Routes', function(){
@@ -47,6 +55,7 @@ describe('Client Routes', function(){
 		.get('/login/github')
 		.end(function(err,res){
 	  		res.should.have.status(200);
+	  		console.log(res.body)
 	  		res.headers.server.should.equal('GitHub.com')
       		done();
 		})
@@ -57,6 +66,7 @@ describe('Client Routes', function(){
 		.get('/login/github')
 		.end(function(err,res){
 	  		res.should.have.status(200);
+	  		console.log(err)
 	  		res.headers.server.should.equal('GitHub.com')
       		done();
 		})
