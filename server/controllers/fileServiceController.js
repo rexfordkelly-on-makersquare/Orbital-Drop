@@ -1,10 +1,12 @@
 const fs = require('fs');
-const busboy = require('busboy');
+const Busboy = require('busboy');
 const uuid = require('uuid');
 const path = require('path');
 const socketIO = require('socket.io');
 const users = require('../models/activeUserModel.js');
 const util = require('../utils/fileServiceUtil.js');
+const mime = require('mime-types');
+const multiparty = require('multiparty');
 
 
 module.exports = function(express, socketedServer){
@@ -51,24 +53,33 @@ module.exports = function(express, socketedServer){
 			}else{
 				res.status(500).send({error:'User has no session!'});
 			}
-			var recieverUserId = request.body.recieverUserId
+			
 			/*** 
 				bus boy is responsible for parsing multipart form data since express 4.0 droped multipart handling
 				https://www.npmjs.com/package/busboy
 			***/
 			var busboy = new Busboy({ headers: request.headers });
+			
 			// add listener when bus boy handles a file
 			busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
 				// create a unique id and prepend to filename so there isn't namesake clashing
 				var uniqueId = uuid.v4();
 				// asychronously write a file using a stream to uploads folder
-				fstream = fs.createWriteStream(__dirname + '/uploads/' + uniqueId + filename);
+				fstream = fs.createWriteStream(__dirname + '/../uploads/' + uniqueId + filename);
 				file.pipe(fstream);
-				// add uniqueId and filename to user receiving download
-				users[recieverUserId].files.push(util.createFile(uniqueId, filename));
-				// emit a download prompt to the user that is receiving the upload
-				//userSockets[recieverUserId].emit('requestTransfer', {filename:filename, senderUserId: userId});
-				userSockets[recieverUserId].emit('testDownload','dunNeedNothingOnTESTTTTz');
+				
+				var form = new multiparty.Form();
+				 
+			    form.parse(request, function(err, fields) {
+			      var recieverUserId = fields.recieverUserId[0]
+			      var filename = fields.filename[0]
+			      // add uniqueId and filename to user receiving download
+			      users[recieverUserId].files.push(util.createFile(uniqueId, filename));
+			      // emit a download prompt to the user that is receiving the upload
+			      userSockets[recieverUserId].emit('requestTransfer', {filename:filename, senderUserId: userId});
+			      
+			      //userSockets[recieverUserId].emit('testDownload','dunNeedNothingOnTESTTTTz');
+			    });
 			});
 
 			// close request
@@ -85,7 +96,7 @@ module.exports = function(express, socketedServer){
 			if(request.session.passport){
 				userId = request.session.passport.user
 			}else{
-				res.status(500).send({error:'User has no session!'});
+				response.status(500).send({error:'User has no session!'});
 			}
 
 			/*** build redirect to application homepage if have no files ***/
@@ -95,7 +106,7 @@ module.exports = function(express, socketedServer){
 				file = users[userId].files[0]
 			}
 
-			var filepath = __dirname + '/uploads/' + file.fileId + file.filename;
+			var filepath = __dirname + '/../uploads/' + file.fileId + file.filename;
 			var filename = path.basename(filepath);
 			var mimetype = mime.lookup(filepath);
 
