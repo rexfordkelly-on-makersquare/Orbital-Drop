@@ -32,9 +32,9 @@ var helpers = {
 
     console.log("Blacklist updated in DB")
     })
-},
+  },
 
-    addToWhiteListDbase : function (username, approvedUser) {
+  addToWhiteListDbase : function (username, approvedUser) {
 
   UsersModel.update({username: username}, {$push:{whiteList : approvedUser}}, 
     function (err){
@@ -45,7 +45,7 @@ var helpers = {
 
     console.log("Whitelist updated in DB")
     })
-},
+  },
 
   removeFromBlackListDbase : function (username, blockedUser) {
 
@@ -58,7 +58,7 @@ var helpers = {
 
     console.log("Blacklist user removed in DB")
     })
-},
+  },
 
   removeFromWhiteListDbase : function (username, approvedUser) {
 

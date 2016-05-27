@@ -1,8 +1,8 @@
 
-const passport = require('passport');
+//const passport = require('passport');
 
 
-module.exports = function() {
+module.exports = function(passport) {
 
 	return({
 	checkAuth : function(req, res, next) {
@@ -14,7 +14,7 @@ module.exports = function() {
 	},
 
 	serveLogin : function(req,res){
-		res.send('yeay')
+		res.send()
 	},
 	
 	githubRedirect : passport.authenticate('github'),

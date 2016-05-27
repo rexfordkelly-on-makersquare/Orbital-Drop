@@ -8,6 +8,10 @@ module.exports = function(app, express) {
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(express.static(__dirname + "/../../http_public/login"))
+  app.use(function(req,res,next){
+  	console.log(req)
+  	next()
+  })
 
   var helpers = authController(passport)
 

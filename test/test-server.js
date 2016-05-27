@@ -34,27 +34,20 @@ describe('Authentication Routes', function(){
 		.get('/login/github')
 		.end(function(err,res){
 	  		res.should.have.status(200);
+	  		res.headers.server.should.equal('GitHub.com')
       		done();
 		})
 	})
 })
 
 describe('Client Routes', function(){
-	
-	it("should get path '/api/user_profiles'", function(done){
-		chai.request(server)
-		.get('/api/user_profiles')
-		.end(function(err,res){
-	 	 	res.should.have.status(200);
-     	 	done();
-		})
-	})
 
 	it("should get path '/profile'", function(done){
 		chai.request(server)
 		.get('/login/github')
 		.end(function(err,res){
 	  		res.should.have.status(200);
+	  		res.headers.server.should.equal('GitHub.com')
       		done();
 		})
 	})
@@ -64,6 +57,7 @@ describe('Client Routes', function(){
 		.get('/login/github')
 		.end(function(err,res){
 	  		res.should.have.status(200);
+	  		res.headers.server.should.equal('GitHub.com')
       		done();
 		})
 	})
