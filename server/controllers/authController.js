@@ -20,7 +20,7 @@ module.exports = function() {
 	githubRedirect : passport.authenticate('github'),
    
 	githubReturn : passport.authenticate('github', {
-            			successRedirect : '/profile',
+            			successRedirect : '/profiles',
             			failureRedirect : '/'
         		   }),
 	})

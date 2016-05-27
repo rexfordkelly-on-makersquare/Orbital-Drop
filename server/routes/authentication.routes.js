@@ -7,6 +7,7 @@ module.exports = function(app, express) {
   app.use(session({secret: 'mySecretKeyofDoooooooomLOLOLOL'}))
   app.use(passport.initialize());
   app.use(passport.session());
+
   app.use(express.static(__dirname + "/../../http_public/login"))
 
   var helpers = authController(passport)

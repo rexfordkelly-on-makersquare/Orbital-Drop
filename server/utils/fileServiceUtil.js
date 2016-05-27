@@ -13,10 +13,12 @@ module.exports = {
 		file.filename = filename;
 		return file;
 	},
-	findUserBySocketId: function(users, socketId){
+	findUserBySocketId: function(socketId, users){
 		for(var key in users){
 			var user = users[key];
+
 			if(user.socketId === socketId){
+				console.log(user,'matched')
 				return user;
 			}
 		}
